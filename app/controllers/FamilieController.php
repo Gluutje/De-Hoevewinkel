@@ -1,21 +1,38 @@
 <?php
-require_once 'app/models/FamilieModel.php';
-require_once 'app/models/FamilielidModel.php';
-
+/**
+ * FamilieController
+ * 
+ * Deze controller beheert alle familie-gerelateerde functionaliteit
+ * Inclusief CRUD operaties en het bekijken van familieleden
+ */
 class FamilieController {
+    /** @var FamilieModel Instance van het FamilieModel */
     private $model;
+    /** @var PDO Database connectie */
     private $db;
 
+    /**
+     * Constructor
+     * 
+     * @param PDO $db Database connectie object
+     */
     public function __construct($db) {
         $this->db = $db;
         $this->model = new FamilieModel($db);
     }
 
+    /**
+     * Toont het overzicht van alle families
+     */
     public function index() {
         $families = $this->model->getAllFamilies();
         include 'app/views/familie/index.php';
     }
 
+    /**
+     * Verwerkt het toevoegen van een nieuwe familie
+     * Inclusief validatie van invoergegevens
+     */
     public function add() {
         if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             $naam = $_POST['naam'] ?? '';
@@ -57,6 +74,11 @@ class FamilieController {
         include 'app/views/familie/add.php';
     }
 
+    /**
+     * Verwerkt het bewerken van een bestaande familie
+     * 
+     * @param int $id Familie ID
+     */
     public function edit($id) {
         $family = $this->model->getFamilyById($id);
         if (!$family) {
@@ -104,6 +126,11 @@ class FamilieController {
         include 'app/views/familie/edit.php';
     }
 
+    /**
+     * Verwerkt het verwijderen van een familie
+     * 
+     * @param int $id Familie ID
+     */
     public function delete($id) {
         if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             if ($this->model->deleteFamily($id)) {
@@ -117,6 +144,11 @@ class FamilieController {
         include 'app/views/familie/delete.php';
     }
 
+    /**
+     * Toont de familieleden van een specifieke familie
+     * 
+     * @param int $id Familie ID
+     */
     public function viewMembers($id) {
         $family = $this->model->getFamilyById($id);
         if (!$family) {

@@ -1,11 +1,14 @@
 <?php
+// Model class om contributies te beheren
 class ContributieModel {
     private $db;
 
+    // Constructor om de databaseverbinding te initialiseren
     public function __construct($db) {
         $this->db = $db;
     }
 
+    // Methode om alle contributies op te halen, inclusief soort lid en boekjaar
     public function getAllContributies() {
         $query = "SELECT c.*, sl.omschrijving AS soort_lid, b.jaar AS boekjaar 
                   FROM Contributie c
@@ -14,9 +17,10 @@ class ContributieModel {
                   ORDER BY b.jaar DESC, c.leeftijd ASC";
         $stmt = $this->db->prepare($query);
         $stmt->execute();
-        return $stmt->fetchAll(PDO::FETCH_ASSOC);
+        return $stmt->fetchAll(PDO::FETCH_ASSOC); // Retourneer alle resultaten
     }
 
+    // Methode om een specifieke contributie op te halen aan de hand van een ID
     public function getContributieById($id) {
         $query = "SELECT c.*, sl.omschrijving AS soort_lid, b.jaar AS boekjaar 
                   FROM Contributie c
@@ -26,9 +30,10 @@ class ContributieModel {
         $stmt = $this->db->prepare($query);
         $stmt->bindParam(':id', $id, PDO::PARAM_INT);
         $stmt->execute();
-        return $stmt->fetch(PDO::FETCH_ASSOC);
+        return $stmt->fetch(PDO::FETCH_ASSOC); // Retourneer de contributie
     }
 
+    // Methode om een nieuwe contributie toe te voegen aan de database
     public function addContributie($leeftijd, $soort_lid_id, $bedrag, $boekjaar_id) {
         $query = "INSERT INTO Contributie (leeftijd, soort_lid_id, bedrag, boekjaar_id) 
                   VALUES (:leeftijd, :soort_lid_id, :bedrag, :boekjaar_id)";
@@ -37,9 +42,10 @@ class ContributieModel {
         $stmt->bindParam(':soort_lid_id', $soort_lid_id, PDO::PARAM_INT);
         $stmt->bindParam(':bedrag', $bedrag);
         $stmt->bindParam(':boekjaar_id', $boekjaar_id, PDO::PARAM_INT);
-        return $stmt->execute();
+        return $stmt->execute(); // Voer de query uit en retourneer het resultaat
     }
 
+    // Methode om een bestaande contributie bij te werken
     public function updateContributie($id, $leeftijd, $soort_lid_id, $bedrag, $boekjaar_id) {
         $query = "UPDATE Contributie 
                   SET leeftijd = :leeftijd, soort_lid_id = :soort_lid_id, 
@@ -51,53 +57,57 @@ class ContributieModel {
         $stmt->bindParam(':soort_lid_id', $soort_lid_id, PDO::PARAM_INT);
         $stmt->bindParam(':bedrag', $bedrag);
         $stmt->bindParam(':boekjaar_id', $boekjaar_id, PDO::PARAM_INT);
-        return $stmt->execute();
+        return $stmt->execute(); // Voer de query uit en retourneer het resultaat
     }
 
+    // Methode om een contributie te verwijderen
     public function deleteContributie($id) {
         $query = "DELETE FROM Contributie WHERE id = :id";
         $stmt = $this->db->prepare($query);
         $stmt->bindParam(':id', $id, PDO::PARAM_INT);
-        return $stmt->execute();
+        return $stmt->execute(); // Voer de query uit en retourneer het resultaat
     }
 
+    // Methode om alle soorten leden op te halen
     public function getAllSoortLeden() {
         $query = "SELECT id, omschrijving FROM SoortLid 
                   WHERE omschrijving IN ('jeugd', 'aspirant', 'junior', 'senior', 'oudere') 
                   ORDER BY omschrijving";
         $stmt = $this->db->prepare($query);
         $stmt->execute();
-        return $stmt->fetchAll(PDO::FETCH_ASSOC);
+        return $stmt->fetchAll(PDO::FETCH_ASSOC); // Retourneer alle soorten leden
     }
 
+    // Methode om alle boekjaren op te halen
     public function getAllBoekjaren() {
         $query = "SELECT id, jaar FROM Boekjaar ORDER BY jaar DESC";
         $stmt = $this->db->prepare($query);
         $stmt->execute();
-        return $stmt->fetchAll(PDO::FETCH_ASSOC);
+        return $stmt->fetchAll(PDO::FETCH_ASSOC); // Retourneer alle boekjaren
     }
 
+    // Methode om contributies in te stellen voor een bepaald boekjaar
     public function setupContributiesVoorBoekjaar($boekjaar_id, $basisbedrag) {
-        // Begin een transactie
+        // Begin een database-transactie
         $this->db->beginTransaction();
 
         try {
-            // Verwijder bestaande contributies voor dit boekjaar
+            // Verwijder bestaande contributies voor het opgegeven boekjaar
             $query = "DELETE FROM Contributie WHERE boekjaar_id = :boekjaar_id";
             $stmt = $this->db->prepare($query);
             $stmt->bindParam(':boekjaar_id', $boekjaar_id);
             $stmt->execute();
 
-            // Definieer de leeftijdscategorieën en kortingen
+            // Definieer de leeftijdscategorieën en bijbehorende kortingen
             $categories = [
                 ['leeftijd' => 7, 'korting' => 0.50, 'soort' => 'jeugd'],    // 50% korting
                 ['leeftijd' => 12, 'korting' => 0.40, 'soort' => 'aspirant'], // 40% korting
                 ['leeftijd' => 17, 'korting' => 0.25, 'soort' => 'junior'],   // 25% korting
-                ['leeftijd' => 50, 'korting' => 0.00, 'soort' => 'senior'],   // geen korting
+                ['leeftijd' => 50, 'korting' => 0.00, 'soort' => 'senior'],   // Geen korting
                 ['leeftijd' => 150, 'korting' => 0.45, 'soort' => 'oudere']   // 45% korting
             ];
 
-            // Voeg contributie toe voor elke categorie
+            // Voeg een contributie toe voor elke categorie
             foreach ($categories as $category) {
                 $soort_lid_id = $this->getSoortLidIdByOmschrijving($category['soort']);
                 $bedrag = $basisbedrag * (1 - $category['korting']);
@@ -110,29 +120,32 @@ class ContributieModel {
                 );
             }
 
-            // Commit de transactie
+            // Commit de transactie als alles goed gaat
             $this->db->commit();
             return true;
         } catch (Exception $e) {
-            // Als er iets misgaat, rol de transactie terug
+            // Rollback de transactie bij een fout
             $this->db->rollBack();
             return false;
         }
     }
 
+    // Methode om het ID van een soort lid op te halen aan de hand van de omschrijving
     private function getSoortLidIdByOmschrijving($omschrijving) {
         $query = "SELECT id FROM SoortLid WHERE omschrijving = :omschrijving";
         $stmt = $this->db->prepare($query);
         $stmt->bindParam(':omschrijving', $omschrijving);
         $stmt->execute();
         $result = $stmt->fetch(PDO::FETCH_ASSOC);
-        return $result ? $result['id'] : null;
+        return $result ? $result['id'] : null; // Retourneer het ID of null als het niet gevonden is
     }
 
+    // Methode om alle contributies voor een bepaald boekjaar te verwijderen
     public function verwijderContributiesVoorBoekjaar($boekjaar_id) {
         $query = "DELETE FROM Contributie WHERE boekjaar_id = :boekjaar_id";
         $stmt = $this->db->prepare($query);
         $stmt->bindParam(':boekjaar_id', $boekjaar_id, PDO::PARAM_INT);
-        return $stmt->execute();
+        return $stmt->execute(); // Voer de query uit en retourneer het resultaat
     }
 }
+

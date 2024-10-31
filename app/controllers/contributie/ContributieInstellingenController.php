@@ -1,16 +1,33 @@
 <?php
+/**
+ * ContributieInstellingenController
+ * 
+ * Deze controller beheert de contributie instellingen
+ * Verantwoordelijk voor het instellen van basisbedragen en kortingen
+ */
 require_once 'app/controllers/contributie/ContributieBaseController.php';
 require_once 'app/services/ContributieService.php';
 
 class ContributieInstellingenController extends ContributieBaseController {
+    /** @var ContributieService Instance van de ContributieService */
     private $contributieService;
 
+    /**
+     * Constructor initialiseert de basis controller en contributie service
+     * 
+     * @param PDO $db Database connectie object
+     */
     public function __construct($db) {
         parent::__construct($db);
         $this->contributieService = new ContributieService($db);
     }
 
+    /**
+     * Hoofdmethode voor het beheren van contributie instellingen
+     * Verwerkt zowel GET als POST requests
+     */
     public function handle() {
+        // Haal het actieve boekjaar op
         $actiefBoekjaar = $this->baseModel->getActiefBoekjaar();
         
         if (!$actiefBoekjaar) {
@@ -33,6 +50,7 @@ class ContributieInstellingenController extends ContributieBaseController {
             }
         }
 
+        // Verwerk het formulier als er een POST request is
         if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             $basisbedrag = $_POST['basisbedrag'] ?? 100.00;
 

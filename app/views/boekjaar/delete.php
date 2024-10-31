@@ -3,17 +3,20 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Boekjaar Verwijderen - Ledenadministratie</title>
+    <title>Boekjaar Verwijderen</title>
     <link rel="stylesheet" href="/public/css/styles.css">
 </head>
 <body>
-    <div class="familie-container">
-        <a href="/boekjaren" class="btn-back">Terug naar Overzicht</a>
+    <div class="container">
         <h1>Boekjaar Verwijderen</h1>
+        
+        <?php if (isset($error)): ?>
+            <div class="alert alert-danger">
+                <?php echo htmlspecialchars($error); ?>
+            </div>
+        <?php endif; ?>
 
         <p>Weet u zeker dat u het boekjaar <?php echo htmlspecialchars($boekjaar['jaar']); ?> wilt verwijderen?</p>
-        <p>Startdatum: <?php echo htmlspecialchars(date('d-m-Y', strtotime($boekjaar['startdatum']))); ?></p>
-        <p>Einddatum: <?php echo htmlspecialchars(date('d-m-Y', strtotime($boekjaar['einddatum']))); ?></p>
 
         <div class="button-group">
             <form action="/boekjaren/delete/<?php echo $boekjaar['id']; ?>" method="post">
@@ -23,4 +26,4 @@
         </div>
     </div>
 </body>
-</html> 
+</html>

@@ -1,7 +1,21 @@
 <?php
+/**
+ * ContributieRekenModel
+ * 
+ * Deze klasse beheert de berekeningen voor contributies
+ * Erft basis functionaliteit van ContributieBaseModel
+ */
 require_once 'app/models/contributie/ContributieBaseModel.php';
 
 class ContributieRekenModel extends ContributieBaseModel {
+    /**
+     * Stelt de contributies in voor een boekjaar
+     * Berekent de bedragen op basis van het basisbedrag en kortingen
+     * 
+     * @param int $boekjaar_id Boekjaar ID
+     * @param float $basisbedrag Het basisbedrag voor contributies
+     * @return bool True bij succes, false bij falen
+     */
     public function setupContributiesVoorBoekjaar($boekjaar_id, $basisbedrag) {
         try {
             $this->db->beginTransaction();
@@ -52,11 +66,18 @@ class ContributieRekenModel extends ContributieBaseModel {
         }
     }
 
+    /**
+     * Berekent contributies voor alle leden
+     * Koppelt de juiste contributiebedragen aan leden
+     * 
+     * @param int $boekjaar_id Boekjaar ID
+     * @return bool True bij succes, false bij falen
+     */
     public function berekenContributiesVoorAlleLeden($boekjaar_id) {
         try {
             $this->db->beginTransaction();
 
-            // Haal alle familieleden op
+            // Haal alle familieleden op met hun lidmaatschapstype
             $query = "SELECT f.id, f.geboortedatum, lt.soort_lid_id 
                      FROM Familielid f
                      JOIN LidmaatschapType lt ON f.id = lt.familielid_id

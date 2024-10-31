@@ -8,18 +8,22 @@
 </head>
 <body>
     <div class="familie-container">
+        <!-- Terugknop naar familie overzicht -->
         <a href="/families" class="btn-back">Terug naar Overzicht</a>
         <h1>Familieleden van <?php echo htmlspecialchars($family['naam']); ?></h1>
         
+        <!-- Toon familie adresgegevens -->
         <div class="family-info">
             <p><strong>Adres:</strong> <?php echo htmlspecialchars($family['straatnaam'] . ' ' . $family['huisnummer'] . ', ' . $family['postcode'] . ' ' . $family['plaats']); ?></p>
         </div>
 
         <?php if (empty($familieleden)): ?>
+            <!-- Toon melding als er geen familieleden zijn -->
             <div class="alert alert-info">
                 Er zijn nog geen familieleden aan deze familie toegevoegd.
             </div>
         <?php else: ?>
+            <!-- Toon tabel met familieleden -->
             <table class="familie-table">
                 <thead>
                     <tr>
@@ -36,6 +40,7 @@
                             <td><?php echo htmlspecialchars($familielid['geboortedatum']); ?></td>
                             <td><?php echo htmlspecialchars($familielid['familie_relatie']); ?></td>
                             <td>
+                                <!-- Actieknoppen voor bewerken en verwijderen -->
                                 <a href="/familieleden/edit/<?php echo $familielid['id']; ?>" class="btn">Bewerken</a>
                                 <a href="/familieleden/delete/<?php echo $familielid['id']; ?>" class="btn btn-danger">Verwijderen</a>
                             </td>
@@ -45,6 +50,7 @@
             </table>
         <?php endif; ?>
 
+        <!-- Knop voor toevoegen nieuw familielid -->
         <div class="button-group">
             <a href="/familieleden/add" class="btn-add">Nieuw Familielid Toevoegen</a>
         </div>

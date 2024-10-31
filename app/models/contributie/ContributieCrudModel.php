@@ -1,7 +1,19 @@
 <?php
+/**
+ * ContributieCrudModel
+ * 
+ * Deze klasse beheert de CRUD operaties voor contributies
+ * Erft basis functionaliteit van ContributieBaseModel
+ */
 require_once 'app/models/contributie/ContributieBaseModel.php';
 
 class ContributieCrudModel extends ContributieBaseModel {
+    /**
+     * Haalt alle contributies op voor een specifiek boekjaar
+     * 
+     * @param int $boekjaar_id Boekjaar ID
+     * @return array Array met contributies en gerelateerde gegevens
+     */
     public function getContributiesByBoekjaar($boekjaar_id) {
         $query = "SELECT c.*, sl.omschrijving AS soort_lid 
                   FROM Contributie c
@@ -14,6 +26,13 @@ class ContributieCrudModel extends ContributieBaseModel {
         return $stmt->fetchAll(PDO::FETCH_ASSOC);
     }
 
+    /**
+     * Haalt een overzicht op van alle contributies voor het actieve boekjaar
+     * Inclusief lid- en betaalgegevens
+     * 
+     * @param int $boekjaar_id Boekjaar ID
+     * @return array Array met contributie overzicht
+     */
     public function getContributieOverzicht($boekjaar_id) {
         $query = "SELECT f.id AS familielid_id, f.naam AS lid_naam, f.geboortedatum, 
                          fm.naam AS familie_naam,
@@ -37,6 +56,14 @@ class ContributieCrudModel extends ContributieBaseModel {
         return $stmt->fetchAll(PDO::FETCH_ASSOC);
     }
 
+    /**
+     * Verwerkt een contributiebetaling
+     * Gebruikt transacties voor data-integriteit
+     * 
+     * @param int $familielid_id Familielid ID
+     * @param int $boekjaar_id Boekjaar ID
+     * @return bool True bij succes, false bij falen
+     */
     public function verwerkBetaling($familielid_id, $boekjaar_id) {
         try {
             $this->db->beginTransaction();
