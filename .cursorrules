@@ -1,0 +1,50 @@
+De Hoevewinkel Automaat - Demonstratie Regels
+1. Eén Scherm Principe
+ALLES gebeurt op het touchscreen aan de linkerkant van de automaat
+Geen pop-ups, overlays of elementen buiten het touchscreen
+Vaste schermresolutie en layout zoals in het voorbeeld
+Realistische simulatie van een echte automaat-interface
+
+2. MVC-Architectuur
+Strikte scheiding tussen Model, View en Controller
+Models: Beheer van product-, vak- en transactiedata
+Views: Alle schermen binnen de touchscreen interface
+Controllers: Afhandeling van alle interacties
+
+3. Real-time Synchronisatie
+Directe update van voorraad na aankoop
+Live weergave van beschikbaarheid
+Instant feedback bij beheeracties
+Automatische status updates
+
+
+4. CRUD Functionaliteit
+Producten beheren
+Vakken configureren
+Voorraad bijwerken
+Transacties verwerken
+
+5. Gebruikersrollen
+Klant: Producten bekijken en kopen
+Admin: Beheer via hetzelfde touchscreen
+Naadloze overgang tussen rollen
+
+. Uitgebreide Documentatie
+Duidelijke codecommentaar
+Functionaliteit per component
+Setup instructies
+Beheerdershandleiding
+
+9. Feature-voor-Feature Testing
+Test elke functie voordat je verder gaat
+Controleer gebruikerservaring
+Verifieer real-time updates
+Valideer beveiliging
+
+8. Simulatie Accuraatheid
+Realistische betalingsflow
+Correcte vakbediening
+Natuurgetrouwe interacties
+Echte gebruikssituaties
+
+9. Als alle basis functionaliteiten werken implementeren wij ISO25010 kenmerken.
