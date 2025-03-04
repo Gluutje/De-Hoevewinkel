@@ -32,7 +32,7 @@
             <span class="description">Toevoegen, wijzigen en verwijderen van producten</span>
         </a>
         
-        <a href="/?route=admin/slots" class="menu-button">
+        <a href="/?route=slots" class="menu-button">
             <span class="icon">🔧</span>
             <span class="label">Vakken Beheren</span>
             <span class="description">Vullen en configureren van automaatvakken</span>

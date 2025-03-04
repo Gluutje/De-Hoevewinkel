@@ -383,4 +383,43 @@ body {
         rgba(255,255,255,0));
     border-radius: 20px 20px 0 0;
     pointer-events: none;
+}
+
+/* Slot deur styling en animatie */
+.slot::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: var(--slot-empty);
+    border: 1px solid rgba(0,0,0,0.1);
+    border-radius: var(--border-radius);
+    transform-origin: left;
+    transition: transform 0.5s ease;
+    z-index: 1;
+}
+
+.slot.door-open::before {
+    transform: perspective(1000px) rotateY(-100deg);
+}
+
+/* Schaduw effect voor open deur */
+.slot.door-open::after {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: linear-gradient(90deg, rgba(0,0,0,0.2) 0%, transparent 20%);
+    border-radius: var(--border-radius);
+    opacity: 0;
+    transition: opacity 0.5s ease;
+    z-index: 0;
+}
+
+.slot.door-open::after {
+    opacity: 1;
 } 

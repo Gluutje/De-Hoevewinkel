@@ -21,7 +21,7 @@ class Product extends Model {
     }
 
     public function getAllSlots() {
-        $sql = "SELECT s.*, p.name as product_name, p.requires_cooling 
+        $sql = "SELECT s.*, p.name as product_name, p.requires_cooling, p.stock as product_stock 
                 FROM slots s 
                 LEFT JOIN products p ON s.product_id = p.product_id 
                 ORDER BY s.slot_number";
@@ -29,15 +29,7 @@ class Product extends Model {
     }
 
     public function getAvailableProducts() {
-        $sql = "SELECT p.*, 
-                       COUNT(s.slot_id) as available_slots,
-                       SUM(s.current_stock) as total_stock
-                FROM products p
-                LEFT JOIN slots s ON p.product_id = s.product_id
-                WHERE s.status = 'FILLED'
-                GROUP BY p.product_id
-                HAVING total_stock > 0";
-                
+        $sql = "SELECT * FROM products ORDER BY category, name";
         return $this->fetchAll($sql);
     }
 

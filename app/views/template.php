@@ -30,7 +30,7 @@
                                 <?php echo $isFilled ? htmlspecialchars($slot['product_name']) : 'Leeg'; ?>
                             </div>
                             <div class="slot-stock">
-                                <?php echo $isFilled ? $slot['current_stock'] . ' beschikbaar' : ''; ?>
+                                <?php echo $isFilled ? $slot['product_stock'] . ' beschikbaar' : ''; ?>
                             </div>
                         </div>
                         <?php
@@ -58,7 +58,7 @@
                                 <?php echo $isFilled ? htmlspecialchars($slot['product_name']) : 'Leeg'; ?>
                             </div>
                             <div class="slot-stock">
-                                <?php echo $isFilled ? $slot['current_stock'] . ' beschikbaar' : ''; ?>
+                                <?php echo $isFilled ? $slot['product_stock'] . ' beschikbaar' : ''; ?>
                             </div>
                         </div>
                         <?php

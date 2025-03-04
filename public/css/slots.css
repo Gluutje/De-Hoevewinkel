@@ -1,0 +1,424 @@
+.admin-slots {
+    padding: 10px;
+    height: calc(100% - 10px);
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+}
+
+.admin-slots h2 {
+    color: var(--primary-color);
+    margin-bottom: 10px;
+    text-align: center;
+    font-size: 18px;
+}
+
+/* Grid layout voor vakken */
+.slots-grid {
+    display: flex;
+    flex-direction: column;
+    gap: 15px;
+    flex: 1;
+    overflow-y: auto;
+}
+
+.section-header {
+    color: var(--primary-color);
+    font-weight: bold;
+    padding: 5px;
+    background: rgba(0,0,0,0.05);
+    border-radius: var(--border-radius);
+}
+
+.cooled-slots,
+.uncooled-slots {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(120px, 1fr));
+    gap: 10px;
+    padding: 5px;
+}
+
+/* Individueel vak styling */
+.slot {
+    background: white;
+    border: 1px solid #ddd;
+    border-radius: var(--border-radius);
+    padding: 8px;
+    cursor: pointer;
+    min-height: 100px;
+    display: flex;
+    flex-direction: column;
+}
+
+.slot:hover {
+    box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+}
+
+.slot.FILLED {
+    background: var(--slot-filled);
+    color: white;
+}
+
+.slot.EMPTY {
+    background: var(--slot-empty);
+}
+
+.slot.MAINTENANCE {
+    background: #ffebee;
+}
+
+.slot-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-start;
+    margin-bottom: 5px;
+}
+
+.slot-number {
+    font-weight: bold;
+    font-size: 14px;
+}
+
+.slot-type {
+    font-size: 12px;
+    position: absolute;
+    right: 10px;
+    top: 0;
+}
+
+.slot-content {
+    position: relative;
+    z-index: 1;
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    text-align: center;
+    gap: 5px;
+}
+
+.product-name {
+    font-weight: bold;
+    font-size: 13px;
+}
+
+.stock-info {
+    font-size: 12px;
+    opacity: 0.8;
+}
+
+.empty-slot {
+    color: #999;
+    font-style: italic;
+}
+
+/* Configuratie formulier */
+.slot-config-form {
+    position: absolute;
+    left: 50%;
+    top: 50%;
+    transform: translate(-50%, -50%);
+    background: white;
+    padding: 20px;
+    border-radius: var(--border-radius);
+    box-shadow: 0 4px 12px rgba(0,0,0,0.15);
+    width: 90%;
+    max-width: 300px;
+}
+
+.slot-config-form h3 {
+    color: var(--primary-color);
+    margin-bottom: 15px;
+    text-align: center;
+}
+
+.form-group {
+    margin-bottom: 12px;
+}
+
+.form-group label {
+    display: block;
+    margin-bottom: 4px;
+    color: var(--text-color);
+    font-size: 14px;
+}
+
+.form-group select,
+.form-group input {
+    width: 100%;
+    padding: 8px;
+    border: 1px solid #ddd;
+    border-radius: 4px;
+    font-size: 14px;
+}
+
+.form-actions {
+    display: flex;
+    gap: 10px;
+    margin-top: 20px;
+}
+
+.form-actions button {
+    flex: 1;
+    padding: 8px;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+    font-size: 14px;
+    transition: all 0.2s;
+}
+
+.btn-save {
+    background: var(--primary-color);
+    color: white;
+}
+
+.btn-save:hover {
+    background: var(--hover-color);
+}
+
+.btn-cancel {
+    background: #f0f0f0;
+    color: var(--text-color);
+}
+
+.btn-cancel:hover {
+    background: #e0e0e0;
+}
+
+/* Utility classes */
+.hidden {
+    display: none;
+}
+
+/* Product selectie interface */
+.product-selection {
+    position: absolute;
+    left: 50%;
+    top: 50%;
+    transform: translate(-50%, -50%);
+    background: white;
+    padding: 20px;
+    border-radius: var(--border-radius);
+    box-shadow: 0 4px 12px rgba(0,0,0,0.15);
+    width: 90%;
+    max-width: 350px;
+    z-index: 100;
+    background-color: #ffffff;
+}
+
+.selection-header {
+    margin-bottom: 15px;
+}
+
+.selection-header h3 {
+    color: var(--primary-color);
+    margin-bottom: 10px;
+    text-align: center;
+}
+
+/* Verwijder filter-options sectie */
+.filter-options {
+    display: none;
+}
+
+.products-list {
+    max-height: 300px;
+    overflow-y: auto;
+    border: 1px solid #ddd;
+    border-radius: var(--border-radius);
+    margin-bottom: 15px;
+    background-color: #ffffff;
+}
+
+.product-item {
+    padding: 10px;
+    border-bottom: 1px solid #ddd;
+    cursor: pointer;
+    transition: all 0.2s ease;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    background-color: #ffffff;
+}
+
+.product-item:last-child {
+    border-bottom: none;
+}
+
+.product-item:hover {
+    background: var(--background-color);
+}
+
+.product-item.selected {
+    background: var(--secondary-color);
+    color: white;
+}
+
+.product-info {
+    display: flex;
+    flex-direction: column;
+    gap: 4px;
+}
+
+.product-details {
+    font-size: 12px;
+    opacity: 0.8;
+}
+
+.selection-actions {
+    display: flex;
+    gap: 10px;
+}
+
+.selection-actions button {
+    flex: 1;
+    padding: 10px;
+    border: none;
+    border-radius: var(--border-radius);
+    cursor: pointer;
+    transition: all 0.2s ease;
+}
+
+.btn-fill {
+    background: var(--accent-color);
+    color: white;
+}
+
+.btn-fill:disabled {
+    background: #ccc;
+    cursor: not-allowed;
+}
+
+.btn-fill:not(:disabled):hover {
+    background: var(--hover-color);
+    transform: translateY(-2px);
+}
+
+.btn-cancel {
+    background: #f0f0f0;
+    color: var(--text-color);
+}
+
+.btn-cancel:hover {
+    background: #e0e0e0;
+    transform: translateY(-2px);
+}
+
+/* Overlay voor product selectie */
+.overlay {
+    display: none;
+}
+
+/* Meldingen */
+.message {
+    position: absolute;
+    left: 50%;
+    top: 50%;
+    transform: translate(-50%, -50%);
+    padding: 10px 20px;
+    border-radius: 5px;
+    font-size: 16px;
+    font-weight: bold;
+    text-align: center;
+    animation: fadeInOut 3s ease-in-out;
+    box-shadow: 0 2px 5px rgba(0,0,0,0.2);
+    max-width: 80%;
+    margin: 0 auto;
+    z-index: 1000;
+}
+
+.message.success {
+    background-color: #4CAF50;
+    color: white;
+}
+
+.message.error {
+    background-color: #f44336;
+    color: white;
+}
+
+.message.info {
+    background-color: #2196F3;
+    color: white;
+}
+
+@keyframes fadeInOut {
+    0% { opacity: 0; transform: translate(-50%, -50%) scale(0.9); }
+    15% { opacity: 1; transform: translate(-50%, -50%) scale(1); }
+    85% { opacity: 1; transform: translate(-50%, -50%) scale(1); }
+    100% { opacity: 0; transform: translate(-50%, -50%) scale(0.9); }
+}
+
+.remove-product {
+    background-color: #ff4444;
+    color: white;
+    border: none;
+    border-radius: 4px;
+    padding: 4px 8px;
+    margin-top: 8px;
+    cursor: pointer;
+    font-size: 12px;
+    transition: background-color 0.2s;
+}
+
+.remove-product:hover {
+    background-color: #cc0000;
+}
+
+/* Bevestigingsdialoog */
+.confirmation-dialog {
+    position: absolute;
+    left: 50%;
+    top: 50%;
+    transform: translate(-50%, -50%);
+    background: white;
+    padding: 20px;
+    border-radius: var(--border-radius);
+    box-shadow: 0 4px 12px rgba(0,0,0,0.15);
+    width: 90%;
+    max-width: 300px;
+    z-index: 1000;
+}
+
+.dialog-content {
+    text-align: center;
+}
+
+.dialog-message {
+    margin-bottom: 20px;
+    color: var(--text-color);
+}
+
+.dialog-buttons {
+    display: flex;
+    gap: 10px;
+    justify-content: center;
+}
+
+.dialog-buttons button {
+    padding: 8px 20px;
+    border: none;
+    border-radius: var(--border-radius);
+    cursor: pointer;
+    transition: all 0.2s;
+}
+
+.dialog-buttons .btn-confirm {
+    background: var(--accent-color);
+    color: white;
+}
+
+.dialog-buttons .btn-confirm:hover {
+    background: var(--hover-color);
+}
+
+.dialog-buttons .btn-cancel {
+    background: #f0f0f0;
+    color: var(--text-color);
+}
+
+.dialog-buttons .btn-cancel:hover {
+    background: #e0e0e0;
+} 

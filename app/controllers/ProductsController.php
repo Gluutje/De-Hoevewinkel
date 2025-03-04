@@ -158,4 +158,17 @@ class ProductsController extends Controller {
             $this->json(['success' => false, 'message' => 'Product niet gevonden']);
         }
     }
+
+    /**
+     * Haal beschikbare producten op voor vak vullen
+     */
+    public function getAvailable() {
+        if (!isset($_SESSION['admin'])) {
+            $this->json(['success' => false, 'message' => 'Niet geautoriseerd']);
+            return;
+        }
+
+        $products = $this->productModel->getAvailableProducts();
+        $this->json($products);
+    }
 } 
