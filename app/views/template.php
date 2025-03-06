@@ -9,6 +9,14 @@
 </head>
 <body>
     <div class="machine-container">
+        <!-- Debug informatie -->
+        <?php if (isset($slots)) {
+            echo "<!-- Debug: " . count($slots) . " slots gevonden. Status van slot 1: ";
+            $slot1 = array_filter($slots, function($s) { return $s['slot_number'] == 1; });
+            $slot1 = reset($slot1);
+            echo $slot1 ? $slot1['status'] : 'niet gevonden';
+            echo " -->";
+        } ?>
         <!-- Fysieke automaat met vakken -->
         <div class="physical-machine">
             <h1 class="machine-section-header">Gekoelde Producten</h1>
@@ -23,7 +31,7 @@
                         $slot = reset($slot); // Eerste (en enige) element
                         $isFilled = $slot && $slot['status'] === 'FILLED';
                         ?>
-                        <div class="slot <?php echo $isFilled ? 'filled' : ''; ?>" 
+                        <div class="slot <?php echo $isFilled ? 'FILLED' : 'EMPTY'; ?>" 
                              data-slot-number="<?php echo $i; ?>">
                             <span class="slot-number"><?php echo $i; ?></span>
                             <div class="slot-content">
@@ -51,7 +59,7 @@
                         $slot = reset($slot); // Eerste (en enige) element
                         $isFilled = $slot && $slot['status'] === 'FILLED';
                         ?>
-                        <div class="slot <?php echo $isFilled ? 'filled' : ''; ?>" 
+                        <div class="slot <?php echo $isFilled ? 'FILLED' : 'EMPTY'; ?>" 
                              data-slot-number="<?php echo $i; ?>">
                             <span class="slot-number"><?php echo $i; ?></span>
                             <div class="slot-content">

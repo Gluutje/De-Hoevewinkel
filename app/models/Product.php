@@ -21,7 +21,7 @@ class Product extends Model {
     }
 
     public function getAllSlots() {
-        $sql = "SELECT s.*, p.name as product_name, p.requires_cooling, p.stock as product_stock 
+        $sql = "SELECT s.*, p.name as product_name, p.requires_cooling, s.current_stock as product_stock 
                 FROM slots s 
                 LEFT JOIN products p ON s.product_id = p.product_id 
                 ORDER BY s.slot_number";

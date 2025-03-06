@@ -17,7 +17,7 @@ class Slot extends Model {
      * Haal alle vakken op met product informatie
      */
     public function getAllSlots() {
-        $sql = "SELECT s.*, p.name as product_name, p.requires_cooling, p.stock as product_stock 
+        $sql = "SELECT s.*, p.name as product_name, p.requires_cooling, s.current_stock as product_stock 
                 FROM slots s 
                 LEFT JOIN products p ON s.product_id = p.product_id 
                 ORDER BY s.slot_number";
@@ -28,7 +28,7 @@ class Slot extends Model {
      * Haal specifiek vak op
      */
     public function getSlotById($slotId) {
-        $sql = "SELECT s.*, p.name as product_name, p.requires_cooling, p.stock as product_stock 
+        $sql = "SELECT s.*, p.name as product_name, p.requires_cooling, s.current_stock as product_stock 
                 FROM slots s 
                 LEFT JOIN products p ON s.product_id = p.product_id 
                 WHERE s.slot_id = ?";
@@ -147,18 +147,12 @@ class Slot extends Model {
             // Update vak met nieuw product
             $sql = "UPDATE slots 
                     SET product_id = ?,
+                        current_stock = max_capacity,
                         status = 'FILLED',
                         last_refill = CURRENT_TIMESTAMP
                     WHERE slot_id = ?";
 
             $this->execute($sql, [$productId, $slotId]);
-            
-            // Verhoog de product voorraad met 1
-            $sql = "UPDATE products 
-                    SET stock = stock + 1 
-                    WHERE product_id = ?";
-            
-            $this->execute($sql, [$productId]);
             
             // Commit transactie
             $this->db->commit();
@@ -199,9 +193,6 @@ class Slot extends Model {
                 throw new \Exception('Dit vak bevat geen product');
             }
 
-            // Sla het product_id op voordat we het vak updaten
-            $productId = $slot['product_id'];
-
             // Update het vak
             $sql = "UPDATE slots 
                     SET product_id = NULL,
@@ -211,13 +202,6 @@ class Slot extends Model {
                     WHERE slot_id = ?";
             
             $this->execute($sql, [$slotId]);
-
-            // Verlaag de product voorraad met 1
-            $sql = "UPDATE products 
-                    SET stock = stock - 1 
-                    WHERE product_id = ?";
-            
-            $this->execute($sql, [$productId]);
 
             // Commit de transactie
             $this->db->commit();
