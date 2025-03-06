@@ -145,14 +145,37 @@ class Slot extends Model {
             }
 
             // Update vak met nieuw product
-            $sql = "UPDATE slots 
-                    SET product_id = ?,
-                        current_stock = max_capacity,
-                        status = 'FILLED',
-                        last_refill = CURRENT_TIMESTAMP
-                    WHERE slot_id = ?";
+            if ($slot['product_id'] === null) {
+                // Nieuw product in leeg vak
+                $sql = "UPDATE slots 
+                        SET product_id = ?,
+                            current_stock = 1,
+                            status = 'FILLED',
+                            last_refill = CURRENT_TIMESTAMP
+                        WHERE slot_id = ?";
+                $params = [$productId, $slotId];
 
-            $this->execute($sql, [$productId, $slotId]);
+                $this->execute($sql, $params);
+
+                // Bereken totale voorraad (aantal gevulde vakken met dit product)
+                $totalStockSql = "SELECT COUNT(*) as total_stock
+                                 FROM slots
+                                 WHERE product_id = ? AND status = 'FILLED'";
+                
+                $totalStock = $this->fetch($totalStockSql, [$productId]);
+
+                // Update alle vakken met dit product met de totale voorraad
+                $updateStockSql = "UPDATE slots 
+                                  SET current_stock = ?
+                                  WHERE product_id = ? AND status = 'FILLED'";
+                
+                $this->execute($updateStockSql, [$totalStock['total_stock'], $productId]);
+
+            } else if ($slot['product_id'] == $productId) {
+                throw new \Exception('Dit vak bevat al hetzelfde product');
+            } else {
+                throw new \Exception('Dit vak bevat al een ander product');
+            }
             
             // Commit transactie
             $this->db->commit();
@@ -193,6 +216,9 @@ class Slot extends Model {
                 throw new \Exception('Dit vak bevat geen product');
             }
 
+            // Onthoud product_id voor voorraad update
+            $productId = $slot['product_id'];
+
             // Update het vak
             $sql = "UPDATE slots 
                     SET product_id = NULL,
@@ -202,6 +228,23 @@ class Slot extends Model {
                     WHERE slot_id = ?";
             
             $this->execute($sql, [$slotId]);
+
+            // Update voorraad voor alle andere vakken met dit product
+            if ($productId) {
+                // Bereken nieuwe totale voorraad
+                $totalStockSql = "SELECT COUNT(*) as total_stock
+                                 FROM slots
+                                 WHERE product_id = ? AND status = 'FILLED'";
+                
+                $totalStock = $this->fetch($totalStockSql, [$productId]);
+
+                // Update alle overgebleven vakken met dit product
+                $updateStockSql = "UPDATE slots 
+                                  SET current_stock = ?
+                                  WHERE product_id = ? AND status = 'FILLED'";
+                
+                $this->execute($updateStockSql, [$totalStock['total_stock'], $productId]);
+            }
 
             // Commit de transactie
             $this->db->commit();

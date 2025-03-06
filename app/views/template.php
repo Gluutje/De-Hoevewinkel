@@ -116,7 +116,12 @@
         </div>
     </div>
 
-    <!-- Basis JavaScript -->
+    <!-- JavaScript in de juiste volgorde laden -->
     <script src="public/js/main.js"></script>
+    <?php if (isset($extraScripts)): ?>
+        <?php foreach ($extraScripts as $script): ?>
+            <script src="<?php echo $script; ?>"></script>
+        <?php endforeach; ?>
+    <?php endif; ?>
 </body>
 </html> 

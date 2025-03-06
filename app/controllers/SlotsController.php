@@ -30,10 +30,11 @@ class SlotsController extends Controller {
         $slots = $this->slotModel->getAllSlots();
         $products = $this->productModel->getAllProducts();
         
-        // Render de view
+        // Render de view met extra scripts
         $this->view('admin/slots/index', [
             'slots' => $slots,
-            'products' => $products
+            'products' => $products,
+            'extraScripts' => ['public/js/slots.js']
         ]);
     }
 

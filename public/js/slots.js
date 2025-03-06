@@ -193,6 +193,8 @@ document.addEventListener('DOMContentLoaded', function() {
             if (data.success) {
                 // Herlaad vakken voor real-time update
                 loadSlots();
+                // Update hoofdautomaat
+                window.parent.updateMachineStatus();
                 // Sluit selectie interface
                 closeProductSelection();
                 // Toon succes melding
@@ -222,6 +224,8 @@ document.addEventListener('DOMContentLoaded', function() {
             if (result.success) {
                 // Herlaad vakken voor real-time update
                 loadSlots();
+                // Update hoofdautomaat
+                window.parent.updateMachineStatus();
                 // Toon succes melding
                 showMessage(result.message, 'success');
             } else {

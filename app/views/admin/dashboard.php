@@ -18,9 +18,9 @@
             <span class="stat-value"><?php echo $stats['empty_slots']; ?></span>
             <span class="stat-label">Lege Vakken</span>
         </div>
-        <div class="stat-card warning">
-            <span class="stat-value"><?php echo $stats['low_stock']; ?></span>
-            <span class="stat-label">Bijna Op</span>
+        <div class="stat-card">
+            <span class="stat-value"><?php echo $stats['filled_slots']; ?></span>
+            <span class="stat-label">Gevulde Vakken</span>
         </div>
     </div>
 
@@ -38,10 +38,10 @@
             <span class="description">Vullen en configureren van automaatvakken</span>
         </a>
         
-        <a href="/?route=admin/stock" class="menu-button">
-            <span class="icon">📊</span>
-            <span class="label">Voorraad Bijwerken</span>
-            <span class="description">Voorraadniveaus aanpassen en bijvullen</span>
+        <a href="/?route=admin/change" class="menu-button">
+            <span class="icon">💰</span>
+            <span class="label">Wisselgeld Beheren</span>
+            <span class="description">Wisselgeld niveau controleren en bijvullen</span>
         </a>
 
         <a href="/?route=admin/transactions" class="menu-button">
